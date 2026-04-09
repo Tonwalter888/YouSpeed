@@ -227,7 +227,7 @@ static void didSelectRate(float rate) {
 - (void)setRate:(float)newRate {
     float rate = [[self valueForKey:@"_rate"] floatValue];
     if (rate == newRate) return;
-    didSelectRate(newRate)
+    didSelectRate(newRate);
     MLHAMPlayerItemSegment *segment = [self valueForKey:@"_currentSegment"];
     MLInnerTubePlayerConfig *config = [segment playerItem].config;
     if (![config varispeedAllowed]) return;
