@@ -82,28 +82,6 @@ static void didSelectRate(float rate) {
     [[NSNotificationCenter defaultCenter] postNotificationName:YouSpeedUpdateNotification object:nil];
 }
 
-%group Video
-
-%hook YTPlayerOverlayManager
-
-- (void)varispeedSwitchController:(id)arg1 didSelectRate:(float)rate {
-    didSelectRate(rate);
-    %orig;
-}
-
-%end
-
-%hook YTPlayerViewController
-
-- (void)varispeedSwitchController:(id)arg1 didSelectRate:(float)rate {
-    didSelectRate(rate);
-    %orig;
-}
-
-%end
-
-%end
-
 %group Top
 
 %hook YTMainAppControlsOverlayView
@@ -240,17 +218,24 @@ static void didSelectRate(float rate) {
 
 %end
 
+%end
+
+%group Video
+
 %hook MLHAMQueuePlayer
 
 - (void)setRate:(float)newRate {
     float rate = [[self valueForKey:@"_rate"] floatValue];
     if (rate == newRate) return;
+    didSelectRate(rate)
     MLHAMPlayerItemSegment *segment = [self valueForKey:@"_currentSegment"];
     MLInnerTubePlayerConfig *config = [segment playerItem].config;
     if (![config varispeedAllowed]) return;
     [self setValue:@(newRate) forKey:@"_rate"];
     [self internalSetRate];
 }
+
+%end
 
 %end
 
