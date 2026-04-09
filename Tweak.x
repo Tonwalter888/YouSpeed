@@ -82,6 +82,19 @@ static void didSelectRate(float rate) {
     [[NSNotificationCenter defaultCenter] postNotificationName:YouSpeedUpdateNotification object:nil];
 }
 
+%group Video
+
+%hook MLHAMQueuePlayer
+
+- (void)setRate:(float)newRate {
+    didSelectRate(newRate);
+    %orig;
+}
+
+%end
+
+%end
+
 %group Top
 
 %hook YTMainAppControlsOverlayView
@@ -218,14 +231,9 @@ static void didSelectRate(float rate) {
 
 %end
 
-%end
-
-%group Video
-
 %hook MLHAMQueuePlayer
 
 - (void)setRate:(float)newRate {
-    didSelectRate(newRate);
     float rate = [[self valueForKey:@"_rate"] floatValue];
     if (rate == newRate) return;
     MLHAMPlayerItemSegment *segment = [self valueForKey:@"_currentSegment"];
@@ -234,8 +242,6 @@ static void didSelectRate(float rate) {
     [self setValue:@(newRate) forKey:@"_rate"];
     [self internalSetRate];
 }
-
-%end
 
 %end
 
