@@ -257,8 +257,6 @@ static void didSelectRate(float rate) {
 
 // %end
 
-%end
-
 %group OverrideMaxSpeed
 
 %hook YTIPlayerHotConfig
