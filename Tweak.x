@@ -88,7 +88,7 @@ static void didSelectRate(float rate) {
 
 - (void)setRate:(float)newRate {
     didSelectRate(newRate);
-    %orig;
+    [self internalSetRate];
 }
 
 %end
